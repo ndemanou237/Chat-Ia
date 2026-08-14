@@ -1,0 +1,14 @@
+Automat==25.4.16
+Django==6.1
+Incremental==24.11.0
+charset-normalizer==3.5.0
+daphne==4.2.3
+django-channels==0.7.0
+django-htmx==1.29.0
+markdown2==2.5.5
+ollama==0.6.2
+pip-chill==1.0.5
+pyOpenSSL==26.4.0
+pydantic_core==2.46.4
+python-decouple==3.8
+zope.interface==8.5
