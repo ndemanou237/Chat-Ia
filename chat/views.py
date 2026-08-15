@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Project
 from .forms import ProjectForm
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django.views import View
 
 class ProjectListView(LoginRequiredMixin, ListView):
     model = Project
@@ -48,4 +49,17 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         messages.success(request, 'Projet supprimé avec succès')
-        return super().delete(request, *args, **kwargs)                      
+        return super().delete(request, *args, **kwargs)   
+
+class ChatView(LoginRequiredMixin, View):
+    template_name = 'chat/chat.html'
+    def get(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=kwargs['project_id'], owner=request.user)
+        messages = project.chatmessage_set.all()
+        projects = Project.objects.filter(owner=request.user)
+        context = {
+            'project': project,
+            'messages_chat': messages,
+            'projects': projects
+        }                       
+        return render(request, self.template_name, context)
